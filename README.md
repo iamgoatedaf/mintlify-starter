@@ -1,55 +1,47 @@
-# Mintlify Starter Kit
+# Pear Pro MCP — Documentation
 
-Use the starter kit to get your docs deployed and ready to customize.
+The docs site for [`pear-pro-mcp`](https://github.com/iamgoatedaf/pear-pro-mcp), built with [Mintlify](https://mintlify.com).
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
+Everything lives in this `docs/` folder:
 
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
+```
+docs/
+├── docs.json          # Mintlify config: tabs, navigation, theme
+├── favicon.svg
+├── index.mdx          # Welcome
+├── get-started/       # what-is, installation, quickstart, configuration, safety
+├── adapters/          # cursor, claude-desktop, claude-code, codex, generic
+├── guides/            # market-scan, pair-analytics, guarded-trade, rebalance-monitor, trade-ideas
+├── tools/             # overview + market-data, account, rebalance, trading, local-quant
+├── internals/         # architecture, auth, rebalance-math, analytics-math, monitor
+└── security/          # threat-model, disclaimer
+```
 
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
-
-## AI-assisted writing
-
-Set up your AI coding tool to work with Mintlify:
+## Preview locally
 
 ```bash
-npx skills add https://mintlify.com/docs
+npm install -g mint        # Mintlify CLI
+cd docs
+mint dev                   # http://localhost:3000
 ```
 
-This command installs Mintlify's documentation skill for your configured AI tools like Claude Code, Cursor, Windsurf, and others. The skill includes component reference, writing standards, and workflow guidance.
+Validate links before pushing:
 
-See the [AI tools guides](/ai-tools) for tool-specific setup.
-
-## Development
-
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
-
-```
-npm i -g mint
+```bash
+mint broken-links
 ```
 
-Run the following command at the root of your documentation, where your `docs.json` is located:
+## Deploy via GitHub (automatic)
 
-```
-mint dev
-```
+The site deploys itself on every push to `main` through the **Mintlify GitHub App** — no build step, no GitHub Pages, no Actions deploy job.
 
-View your local preview at `http://localhost:3000`.
+One-time setup:
 
-## Publishing changes
+1. Go to the [Mintlify dashboard](https://dashboard.mintlify.com) and sign in with GitHub.
+2. **Create a project** and connect the `iamgoatedaf/pear-pro-mcp` repository.
+3. When asked for the **docs directory**, set it to `docs` (this folder, where `docs.json` lives).
+4. Mintlify installs its GitHub App on the repo and does the first deploy.
 
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
+After that, every push to `main` that touches `docs/**` redeploys the live site automatically. Open the editor and the live URL from the dashboard (e.g. `https://<your-subdomain>.mintlify.app`), and add a custom domain there if you want one.
 
-## Need help?
-
-### Troubleshooting
-
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
-
-### Resources
-- [Mintlify documentation](https://mintlify.com/docs)
+> The `.github/workflows/docs.yml` workflow in this repo is **validation only** — it runs `mint broken-links` on PRs and pushes so bad links fail CI. The actual publish is handled by the Mintlify GitHub App, exactly like the Lighter MCP docs.
